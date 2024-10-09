@@ -29,9 +29,11 @@ git config --global user.email "<email>"
 git config -global user.name
 git config --global user.email
 ```
+
 ![git3](配置用户名邮箱.png)
 
 随后安装Python3和Python虚拟环境，输入以下指令：
+
 ```
 sudo apt install python3
 sudo apt install python3-venv
@@ -40,6 +42,7 @@ sudo apt install python3-venv
 ![alt text](python_install.png)
 
 接着查看Python版本，输入以下指令：
+
 ```
 python --version
 ```
@@ -109,6 +112,7 @@ git commit -m "docs: 创建README.md文件"
 # 推送本地提交至[远程仓库/分支]，即[origin/master]
 git push origin master
 ```
+
 ![git2](image-10.png)
 
 ### 使用 SSH 访问远程仓库
@@ -121,7 +125,7 @@ git push origin master
 若当前用户 ~/.ssh/ 目录中已存在私钥 id rsa 与公钥 id rsa.pub 文件，直接使用即可。否则使用命令 **ssh-keygen** 新建 SSH 公私钥对，主要参数解析如下：
 
 * -t 指定密钥类型，如 ed25519 或 rsa()
-* -f 指定用于存储私钥的文件名，若不使用，则提示默认文件及路径为 ~/.ssh/id_rsa 
+* -f 指定用于存储私钥的文件名，若不使用，则提示默认文件及路径为 ~/.ssh/id_rsa
 * -C 指定注释内容，可用作公钥名称，Codeup称之为[标题]
 
 这里我使用ed25519类型的密钥，使用命令 ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -C "id_ed25519" 生成公私钥对，如图所示：
@@ -138,7 +142,7 @@ git push origin master
 在云端Codeup页面右上角选择「个人设置->SSH 公钥」，粘贴上一步复制的公钥后完成添加。
 ![ssh](image-14.png)
 
-#### chong仓库并重新克隆
+#### 重建远程仓库并重新克隆
 
 重复前面的克隆步骤，重新使用SSH方式克隆代码库。
 ![ssh2](image-15.png)
@@ -166,7 +170,7 @@ git push origin master
 修改 test.py 文件，添加一行代码，然后执行 git status 命令查看文件状态。
 ![modified](image-19.png)
 由此可见， test.py在工作录中的状态为被跟踪（Tracked），但修改尚未被暂存（Not Staged），必须再次使用 git add 指令暂存该文件，随后方可再次提交。
-*另外需要注意的是，该文件已经使用了add命令，被add的文件就已经被跟踪，再次使用add命令，才会将修改的内容再次添加到暂存区。*
+*:star:另外需要注意的是，该文件已经使用了add命令，被add的文件就已经被跟踪，再次使用add命令，才会将修改的内容再次添加到暂存区。*
 ![add](image-20.png)
 
 随后修订 test.py ，新增一条语句后再次观察文件状态，可见 test.py 同时具有等待被提交以及尚未保存的内容。显然，刚增加的 import re 属于尚未被暂存的内容。
@@ -193,17 +197,23 @@ git log 命令可以用于查看提交历史记录，具有非常强大的能力
 实际编程时，经常会遇到希望将当前版本与过往提交的某个版本进行比较的场景。此时可在 git 1og 查询的基础上使用 **git diff** 查询某过往提交版本与当前工作目录中版本的差异。
 
 * 比较当前版本与指定版本的差异
+
 ```
 git diff <commit>
 ```
+
 * 比较指定版本与指定版本的差异
+
 ```
 git diff <commit1> <commit2>
 ```
+
 * 比较当前版本与指定版本的差异，仅显示差异部分
+
 ```
 git diff <commit> --stat
 ```
+
 实验中，先修改test.py, 然后将test.py当前工作目录中的版本与SHA-1校验和为「394ea07...」的历史提交版本比较。
 ![diff](image-27.png)
 从图中可以发现，在 Bash 中, ！有特殊含义，如果它不是在特定的命令历史扩展等上下文中正确使用，就会出现 “event not found” 错误。
@@ -224,13 +234,16 @@ echo "print("Hello,world!");" >> test.py 这个命令中，双引号内的字符
 git restore --staged <file> # 将提交区（代码仓库）中HEAD指向的版本复制到暂存区
 git status # 查看状态
 ```
+
 ![restore](image-30.png)
 也可以使用命令 git reset HEAD <file> 来取消对 test.py 的暂存。需要特别注意的是，若该指令重复执行，将会**依次取消**对于test.py的历史提交，是非常危险的命令，**必须慎用**。
+
 ```
 git add test.py # 重新暂存文件git status # 查看状态
 git reset HEAD test.py # 取消暂存
 git status # 查看状态
 ```
+
 ![restore2](image-31.png)
 
 * **撤销提交**
@@ -238,7 +251,7 @@ git status # 查看状态
 ![alt text](image-32.png)
 使用命令 git reset HEAD~ 撤销提交后査看文件状态，可发现 test.py 已恢复到尚未暂存与提交的状态。
 ![alt text](image-33.png)
-**注意：如若 git reset HEAD~重复执行，会造成 HEAD 不断偏移，谨慎使用!**
+**:star:注意：如若 git reset HEAD~重复执行，会造成 HEAD 不断偏移，谨慎使用!**
 
 * **撤销推送**
 本地回滚 HEAD 后强制推送远程仓库，等价于撤销先前的推送。
@@ -247,11 +260,13 @@ git status # 查看状态
 执行以上操作后登陆Codeup，查看远程仓库 master 分支「提交」页面，可见本次新提交记录。
 ![check2](image-35.png)
 输入以下指令用来撤销推送：
+
 ```
 git reset HEAD~ # 撤销提交（本地回滚 HEAD）
 git push origin master --force # 强制推送到远程仓库
 #或者用：git push -f origin master # 强制推送到远程仓库
 ```
+
 ![alt text](image-36.png)
 执行以上操作后登陆 Codeup，查看远程仓库 master 分支「提交」页面，可见本次新提交记录。
 ![alt text](image-37.png)
@@ -261,6 +276,7 @@ git push origin master --force # 强制推送到远程仓库
 #### 删除文件以及恢复指定文件
 
 ##### 保留文件，取消跟踪
+
 ```
 git status # 查看现在的状态，发现有部分内容没有被add，即没有被跟踪
 git add test.py # 全部跟踪
@@ -270,7 +286,157 @@ git status
 git add test.py # 再次跟踪
 git status
 ```
+
 ![cached](image-38.png)
 
 ##### 从暂存区域恢复文件
-修订文件，暂存，随后删除文件但并不暂存删除操作，可将暂存区域 index 暂存的版本恢复到工作目录。
+
+修订文件，暂存，随后删除文件**但并不暂存删除操作**，可将暂存区域 index 暂存的版本恢复到工作目录。
+
+```
+rm test.py # 删除文件,但并不暂存删除操作
+git restore test.py # 从暂存区恢复刚刚删除的test.py文件，即将暂存区的版本复制到本地工作目录
+```
+
+![rm1](image-39.png)
+![rm2](image-40.png)
+
+##### 从本地仓库恢复文件
+
+修订文件，暂存，随后删除文件且同时暂存删除操作，则先前暂存但未提交的修订内容丢失，仅可从本地仓库 HEAD 恢复。
+
+```
+git status # 查看状态
+git rm test.py # 使用命令rm删除文件后，也删除状态
+# 使用上面的命令，会发现有报错如下：
+# error: the following file has changes staged in the index: ...
+# 对于已经暂存修改的文件，使用git rm删除时必须带上参数-f
+git rm test.py -f
+git status # 查看状态，发现test.py已被标记为deleted，先前暂存的modified消失了，此时暂存区已经没有test.py这个文件了
+git restore test.py # 执行restore不能恢复被删除的文件，思考为什么？ ---因为暂存区里面的想要被恢复的内容已经被删除了
+git restore --staged test.py # 将版本库（提交（commit）区）中HEAD指向的版本复制到暂存（add）区
+cat tets.py # 查看test.py并没有恢复
+git status # 查看状态
+git restore test.py # 从暂存区恢复test.py文件，即将暂存区的版本复制到本地工作目录中
+cat test.py # 查看test.py的内容，看看是哪一个版本，发现是不包含 Hello world! 和add something for git_exp内容的版本
+```
+
+![rm3](image-41.png)
+
+当然我们也可以使用单条命令如下，基于提交区 HEAD 指向的版本，同时恢复暂存区与工作区中的 test.py 。
+
+```
+git restore --source=HEAD --staged --worktree test.py # 该命令等价于 git checkout HEAD test.py
+```
+
+![rm4](image-42.png)
+
+##### 从远程仓库恢复文件
+
+若删除的文件因各种原因已无法从本地仓库及缓冲区恢复，则需考虑从远程仓库恢复文件。
+命令 ```git fetch origin``` 会抓取克隆(或上一次抓取)后新推送的所有工作。 特别注意 git fetch 只会将数据下载到本地仓库，而不会自动合并或修改当前工作去的文件，后续需要手动融合。
+运行 ``` git pull ```则会首先自动抓取远程分支的所有工作，并将其融合至当前分支。
+具体而言:
+a. 从远程仓库下载最新的提交历史和代码文件到本地;
+b. 若本地修改尚未提交，会尝试将远程代码和本地代码自动合并
+c. 若合并过程中出现冲突，需要用户手动解决冲突并提交合并结果。
+![gitpull](image-43.png)
+在正常情况下，提示均已更新至最新版本。
+这个指令在多人协作场景发挥重要作用，要牢记！！！:astonished:
+
+### 分支管理训练
+
+在Git中，分支(Branch)是指在版本控制下独立开发的代码线。每个Git仓库都可以有一个或多个分支，每个分支可以包含不同的代码修改和提交历史。
+分支在Git中非常灵活和强大，它们提供了以下好处:
+a. **并行开发**:可以在不同的分支上同时进行独立开发，提高团队工作效率
+b. **特性开发**: 可以在单独的分支上开发新的功能，然后在完成后将其合并到主分支。
+c. **Bug修复**: 可以在一个分支上修复错误，然后将修复内容合并到主分支，而不影响正在进行的其他开发工作。
+d. **版本管理**: 每个分支都有自己的提交历史，可以方便地在不同的版本之间切换和查看。
+
+#### 创建 develop 分支用于开发
+
+【:bulb:理论回顾】创建一个分支，本质上就是创建了一个指向当前提交对象的指针。
+
+1. 使用以下指令新建并切换到```develop```分支里面.
+
+```
+git branch develop # 该命令本质上是在当前所在的提交对象上创建一个新的指针
+git switch develop # 切换到develop分支上
+```
+
+![develop](image-44.png)
+此外也可以使用更加简洁的命令 ```git checkout -b <branch>``` 可以达到以上同样的效果
+
+2. 创建文件config.json,仅供本地测试使用，需要通过.gitignore文件忽略该文件。
+![config](image-45.png)
+3. 创建文件test_br.py, 其中包含需要Git托管的业务逻辑代码。
+![develop2](image-46.png)
+4. 本地测试Python脚本
+![python](image-47.png)
+5. 配置忽略 ```config.json``` ，即将 ```config.json``` 写入 ```.gitignore``` 文件。
+![gitignore](image-48.png)
+![gitignore2](image-49.png)
+6. 暂存、提交、推送。完成以下操作后，在Codeup查看 ```develop``` 分支，可发现 test_br.py 已经成功推送到远程仓库。
+```
+git add test_br.py .gitignore # 跟踪新文件，暂存修订文件
+git status # 观察文件状态
+git commit -m "feat(test_br.py): 读取config.json，打印dev_sn与dev_pws；docs（.gitignore）: 添加config.json" # 提交文件
+git status # 观察文件状态
+git push origin develop # 推送到远程仓库/分支[origin/develop]，若远程分支不存在，则创建
+```
+![gitignore3](image-50.png)
+![CodeUp](image-51.png)
+
+#### 创建```feature```分支用于特定功能开发
+
+1. 从当前分支创建 ```feature``` 分支并推送当前暂存文件至远程仓库对应分支。
+
+```
+git checkout -b feature # 等价于 git branch feature \n git switch feature
+```
+![feature](image-52.png)
+2. 修订 ```test.py``` 中的代码，完成 ```feature``` 功能需求，从 ```config.json``` 读取并打印 ```login_url``` 。
+![testadd](image-53.png)
+3. 修订 ```config.json``` 对应增补 ```login_url``` 相关内容，用于 ```test.py``` 测试。
+![configadd](image-54.png)
+4. 执行本地测试，确认 ```feature``` 开发情况满足需求
+![test_feature](image-55.png)
+5. 本地暂存提交，推送远程仓库 ```feature``` 分支
+![commit](image-57.png)
+6. 将 ```feature``` 分支合并（Merge）到 ```develop``` 分支，并推送到远程仓库
+```
+git checkout develop # 切换到develop分支
+cat test.py # 此时develop分支下的test.py还是前面最原始的内容
+git merge feature # 把feature里面的内容合并到develop里面，如果遇到同名的进行覆盖
+git status
+cat test.py # 此时develop分支下的test.py 已经存在打印login_ur1的语句
+git push origin develop
+```
+![merge](image-58.png)
+此时查看 Codeup，在 ```Beryl_exp_pyms``` 项目的 ```develop``` 分支，可发现代码已提交成功若确认开发完成，则可以继续将 ```develop``` 分支合并到 ```master``` 分支并推送远程仓库。若云端 ```master``` 有对应生产环境流水线，此时便会触发流水线执行打包部署。
+```
+git checkout master # 切换到master分支
+git merge develop
+git push origin master
+```
+![master](image-59.png)
+
+#### 创建```hotfix```分支执行热修复
+
+代码在 master 上线发布后，若突然发现存在严重 bug，比如「不应打印密码!」，则需马上修复，可立即从 master 分支签出一个 hotfix 分支用于修复处理。
+```
+git checkout -b hotfix
+```
+本实验中，简单设定修复措施，即删除 ```test.py``` 打印 ```dev_pwd``` 的语句
+![shili](image-60.png)
+完成修订测试后，将  ```hotfix``` 分支合并到 ```master``` 分支和 ```develop``` 分支
+![exp](image-61.png)
+操作如下：
+![hotfix](image-62.png)
+
+最后删除 ```hotfix``` 分支
+```
+git branch -d hotfix
+```
+![delete](image-63.png)
+:star::star::star:
